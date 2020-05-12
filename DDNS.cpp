@@ -18,9 +18,6 @@ https://forum.arduino.cc/index.php?topic=462217.0
 #include <SPI.h>
 #include <Arduino.h>
 
-void EasyDDNSClass::service(String ddns_service){
-  ddns_choice = ddns_service;
-}
 
 void EasyDDNSClass::client(String ddns_domain, String ddns_username, String ddns_password){
   ddns_d = ddns_domain;
