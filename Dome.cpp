@@ -3,7 +3,8 @@
 
 #include "DOME.h"
 
-void SendToDrive(SensData data){
+//Ethernet Functions
+void SendToGDrive(SensData data){
   char serverName[] = "api.pushingbox.com";
   char devID[] = "vE07EE5D5E30E8D7"; // Unique ID for PushingBox
   unsigned long startTime = millis();
@@ -103,11 +104,11 @@ void HTML_page(EthernetClient client){
 void Change_Light_State(String readString){
   if(readString.indexOf("?lighton") >0)//checks for on
   {
-    digitalWrite(led, HIGH);    // set pin 8 high
+    digitalWrite(LED, HIGH);    // set pin 8 high
   }
   if(readString.indexOf("?lightoff") >0)//checks for off
     {
-      digitalWrite(led, LOW);    // set pin 8 low
+      digitalWrite(LED, LOW);    // set pin 8 low
     }
 }
 
@@ -123,3 +124,96 @@ void Update_Sensor_Info(EthernetClient client){
   client.print(sensorSmooth);
   client.print("<br />");
 }
+
+// Light Functions
+void SetLights(byte *brightness){
+
+    analogWrite(WHITE, brightness[0]);
+    analogWrite(BLUE, brightness[1]);
+    analogWrite(RED1, brightness[2]);
+    analogWrite(RED2, brightness[3]);
+}
+
+void ReadLights(int *light_volt){
+    
+    int ref = analogRead(REF_in);
+    *light_volt = ref; // Same as light_volt[0]
+    light_volt[1] = ref - analogRead(WHITE_in);
+    light_volt[2] = ref - analogRead(BLUE_in);
+    light_volt[3] = ref - analogRead(RED1_in);
+    light_volt[4] = ref - analogRead(RED2_in);
+
+    // Serial.print(light_volt[0]*V_CONV);
+    // Serial.print("\t");
+    // Serial.print(light_volt[1]*V_CONV);
+    // Serial.print("\t");
+    // Serial.print(light_volt[2]*V_CONV);
+    // Serial.print("\t");
+    // Serial.print(light_volt[3]*V_CONV);
+    // Serial.print("\t");
+    // Serial.println(light_volt[4]*V_CONV);
+}
+
+void BrightnessController(int*v_now, int*v_ref, byte*brightness){
+  const byte gain = 1;
+  static float f_brightness[4];
+  for (int i = 0; i < 4; i++)
+  {
+    signed int err = v_ref[i] - v_now[i+1]; //+1 because index 0 is + voltage rail
+    f_brightness[i] = 0.99*f_brightness[i] + 0.01*(err*gain);
+    Serial.print(f_brightness[i]);
+    Serial.print(" ");
+
+    if ( f_brightness[i]>= 255){
+      brightness[i] = 255;
+    }
+    else if (f_brightness[i]<= 0){
+      brightness[i] = 0;
+    }    
+    else{
+      brightness[i] = (byte)f_brightness[i];
+    }
+
+    Serial.print(brightness[i]);
+    Serial.print(" ");
+    Serial.print(err);
+    Serial.print("\t");
+  }
+  Serial.println("\t");
+  delay(20);
+}
+
+void GlowLights(byte brightness[4])
+{
+    delay(25);
+
+    for (byte i = 0; i <= 4; i++)
+    {
+        if(brightness[i]>=255){
+            brightness[i] = 0;
+        }
+        else
+        {
+            brightness[i]++;
+        }      
+    }  
+}
+
+
+/*bool Soil_Trigger(byte trig){
+    if (analogRead(SOIL)<trig){ // Value between 0 and 0x3FF, saturates at 2A7
+
+        Serial.print("Soil sensor triggered at: ");
+        Serial.print(analogRead(SOIL)/(679.0));
+        Serial.println(" %");
+        
+        return true;
+    }
+    else
+    {
+        return false;
+    };
+     
+}
+*/
+
