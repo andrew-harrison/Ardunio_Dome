@@ -126,6 +126,11 @@ void Update_Sensor_Info(EthernetClient client){
 }
 
 // Light Functions
+int GetPowerLevel(){
+  int level = analogRead(A9);
+  return level;
+}
+
 void SetLights(byte *brightness){
 
     analogWrite(WHITE, brightness[0]);
@@ -161,8 +166,8 @@ void BrightnessController(int*v_now, int*v_ref, byte*brightness){
   {
     signed int err = v_ref[i] - v_now[i+1]; //+1 because index 0 is + voltage rail
     f_brightness[i] = 0.99*f_brightness[i] + 0.01*(err*gain);
-    Serial.print(f_brightness[i]);
-    Serial.print(" ");
+    // Serial.print(f_brightness[i]);
+    // Serial.print(" ");
 
     if ( f_brightness[i]>= 255){
       brightness[i] = 255;
@@ -174,10 +179,12 @@ void BrightnessController(int*v_now, int*v_ref, byte*brightness){
       brightness[i] = (byte)f_brightness[i];
     }
 
-    Serial.print(brightness[i]);
-    Serial.print(" ");
-    Serial.print(err);
-    Serial.print("\t");
+    // Serial.print(brightness[i]);
+    // Serial.print(" ");
+    // Serial.print(err);
+    // Serial.print("\t");
+    // Serial.print(v_now[i+1]);
+    // Serial.print("\t");
   }
   Serial.println("\t");
   delay(20);

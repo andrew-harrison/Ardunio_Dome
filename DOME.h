@@ -62,6 +62,7 @@ void HTML_page(EthernetClient client);
 // Main functions
 void SendToGDrive(SensData data);
 
+int GetPowerLevel();
 void BrightnessController(int*v_now, int*v_ref, byte*brightness);
 void SetLights(byte brightness[4]);
 void ReadLights(int*);
