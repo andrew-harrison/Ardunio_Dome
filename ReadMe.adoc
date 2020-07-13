@@ -1,58 +1,61 @@
-:Author: drew530
-:Email: {AuthorEmail}
+:Author: Andrew Harrison
+:Email: harrison_andrew@outlook.com
 :Date: 22/04/2020
-:Revision: version#
+:Revision: 01
 :License: Public Domain
 
-= Project: {Project}
+= Project: Plant Dome 🌵
 
-Describe your project
+Control system and data gathering of hardware used in plant dome. The components required include:
+
+x4 LEDs at different frequencies used by the plant for photosynthesis (I used x4 MOSFETs with resistors to switch)
+5V DC pump (I used a BJT and 5V relay to switch)
+Capacitive soil moisture sensor
+Ethernet shield to upload telemetry to google sheets (if required)
 
 == Step 1: Installation
-Please describe the steps to install this project.
 
-For example:
+This project is developed in Visual studio code using the Platform IO platform (https://platformio.org/install/ide?install=vscode)
 
-1. Open this file
-2. Edit as you like
-3. Release to the World!
+However any platform can be used to compile and flash code to the arduino. 
+
+The following libraries must be installed to compile:
+
+* Arduino.h
+* Ethernet.h
+* SPI.h
 
 == Step 2: Assemble the circuit
 
-Assemble the circuit following the diagram layout.png attached to the sketch
+Assemble the circuit following the diagram Dome_Schematic.png (alternatively this can be opened in the Fritzing file Dome_Schematic.fzz if modifications need to be made)
 
 == Step 3: Load the code
 
 Upload the code contained in this sketch on to your board
 
-=== Folder structure
-
-....
- sketch123                => Arduino sketch folder
-  ├── sketch123.ino       => main Arduino file
-  ├── schematics.png      => (optional) an image of the required schematics
-  ├── layout.png          => (optional) an image of the layout
-  └── ReadMe.adoc         => this file
-....
-
 === License
-This project is released under a {License} License.
-
-=== Contributing
-To contribute to this project please contact drew530 https://id.arduino.cc/drew530
+This project is released under a Public License.
 
 === BOM
 Add the bill of the materials you need for this project.
 
 |===
-| ID | Part name      | Part number | Quantity
-| R1 | 10k Resistor   | 1234-abcd   | 10
-| L1 | Red LED        | 2345-asdf   | 5
-| A1 | Arduino Zero   | ABX00066    | 1
+| ID | Part name           | Quantity
+| P1 | 5V 2A pwr suppl     | 1
+| A1 | Arduuno Mega        | 1
+| E1 | Etherne shield      | 1
+| B1 | Buck converter      | 1
+| C1 | Moisture sensor     | 1
+|LED#|3W LEDs              | 4
+|Q1-4|N-type MOSFET 2A     | 4
+|R1-4|1.2 ohm 1w resistor  | 4
+|R5-8|47 kohm 1/4w resistor| 4
+| M1 |5V pump              | 1
+| Q5 | BJT transistor      | 1
+| R9 | 330 ohm resistor    | 1
+| S1 | 5V relay            | 1
+
 |===
 
-
 === Help
-This document is written in the _AsciiDoc_ format, a markup language to describe documents.
-If you need help you can search the http://www.methods.co.nz/asciidoc[AsciiDoc homepage]
-or consult the http://powerman.name/doc/asciidoc[AsciiDoc cheatsheet]
+Feel free to contact me on at: harrison_andrew@outlook.com
